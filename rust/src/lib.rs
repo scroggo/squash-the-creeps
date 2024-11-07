@@ -1,5 +1,6 @@
 use godot::prelude::*;
 
+mod mob;
 mod player;
 
 struct RustExtension;
