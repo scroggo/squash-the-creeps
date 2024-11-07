@@ -1,0 +1,10 @@
+# Godot 4+ specific ignores
+godot/.godot/
+/android/
+
+# My rust output
+rust/target/
+
+# VIM swap files
+*.swp
+
