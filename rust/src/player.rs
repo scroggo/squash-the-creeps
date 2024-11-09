@@ -29,21 +29,11 @@ impl ICharacterBody3D for Player {
 
         let input = Input::singleton();
 
-        if input.is_action_pressed("move_left") {
-            direction.x -= 1.0;
-        }
-        if input.is_action_pressed("move_right") {
-            direction.x += 1.0;
-        }
-        if input.is_action_pressed("move_forward") {
-            direction.z -= 1.0;
-        }
-        if input.is_action_pressed("move_back") {
-            direction.z += 1.0;
-        }
+        direction.x = input.get_axis("move_left", "move_right");
+        direction.z = input.get_axis("move_forward", "move_back");
 
         if direction != Vector3::ZERO {
-            direction = direction.normalized();
+            direction = direction.limit_length(Some(1.0));
             let mut pivot = self.base().get_node_as::<Node3D>("Pivot");
             pivot.set_basis(Basis::new_looking_at(direction, Vector3::UP, false));
         }
