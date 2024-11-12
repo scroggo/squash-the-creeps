@@ -1,7 +1,8 @@
-[gd_scene load_steps=8 format=3 uid="uid://clgsg3fxi6e6c"]
+[gd_scene load_steps=10 format=3 uid="uid://clgsg3fxi6e6c"]
 
 [ext_resource type="PackedScene" uid="uid://dkxqf3sn60q5s" path="res://player.tscn" id="1_hp3n3"]
 [ext_resource type="PackedScene" uid="uid://cw0rsp0vbu6vf" path="res://mob.tscn" id="1_peoyx"]
+[ext_resource type="FontFile" uid="uid://cnnvhsd0o7gb0" path="res://fonts/Montserrat-Medium.ttf" id="3_qiaoh"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_d6fl5"]
 size = Vector3(60, 2, 60)
@@ -21,6 +22,9 @@ _data = {
 "tilts": PackedFloat32Array(0, 0, 0, 0, 0)
 }
 point_count = 5
+
+[sub_resource type="Theme" id="Theme_3fdwa"]
+default_font = ExtResource("3_qiaoh")
 
 [node name="Main" type="Main"]
 mob_scene = ExtResource("1_peoyx")
@@ -77,3 +81,50 @@ transform = Transform3D(0.00294407, 0, -0.999996, 0, 1, 0, 0.999996, 0, 0.002944
 [node name="MobTimer" type="Timer" parent="."]
 wait_time = 0.5
 autostart = true
+
+[node name="UserInterface" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("Theme_3fdwa")
+
+[node name="ScoreLabel" type="ScoreLabel" parent="UserInterface"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -32.0
+offset_top = 30.0
+offset_right = 32.0
+offset_bottom = 53.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "Score: 0"
+
+[node name="Retry" type="ColorRect" parent="UserInterface"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.188235, 0.121569, 0.121569, 0.427451)
+
+[node name="Label" type="Label" parent="UserInterface/Retry"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -10.5
+offset_right = 20.0
+offset_bottom = 10.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "Retry?"
