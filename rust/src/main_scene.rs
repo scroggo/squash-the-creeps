@@ -27,6 +27,9 @@ impl INode for Main {
         self.base()
             .get_node_as::<Timer>("MobTimer")
             .connect("timeout", &self.base().callable("on_mob_timer_timeout"));
+        self.base()
+            .get_node_as::<Player>("Player")
+            .connect("hit", &self.base().callable("on_player_hit"));
     }
 }
 
@@ -45,5 +48,10 @@ impl Main {
             .initialize(spawn_location.get_position(), player.get_position());
 
         self.base_mut().add_child(mob);
+    }
+
+    #[func]
+    fn on_player_hit(&mut self) {
+        self.base().get_node_as::<Timer>("MobTimer").stop();
     }
 }

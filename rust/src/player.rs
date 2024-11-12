@@ -1,4 +1,4 @@
-use godot::classes::{CharacterBody3D, ICharacterBody3D};
+use godot::classes::{Area3D, CharacterBody3D, ICharacterBody3D};
 use godot::prelude::*;
 
 use crate::mob::Mob;
@@ -30,6 +30,12 @@ impl ICharacterBody3D for Player {
             bounce_impulse: 16.0,
             base,
         }
+    }
+
+    fn ready(&mut self) {
+        self.base()
+            .get_node_as::<Area3D>("MobDetector")
+            .connect("body_entered", &self.base().callable("on_body_entered"));
     }
 
     fn physics_process(&mut self, delta: f64) {
@@ -87,5 +93,21 @@ impl ICharacterBody3D for Player {
         let target_velocity = self.target_velocity;
         self.base_mut().set_velocity(target_velocity);
         self.base_mut().move_and_slide();
+    }
+}
+
+#[godot_api]
+impl Player {
+    #[signal]
+    fn hit();
+
+    fn die(&mut self) {
+        self.base_mut().emit_signal("hit", &[]);
+        self.base_mut().queue_free();
+    }
+
+    #[func]
+    fn on_body_entered(&mut self, _mob: Gd<Node3D>) {
+        self.die();
     }
 }
