@@ -18,7 +18,7 @@ metadata/_edit_group_ = true
 [node name="Character" parent="Pivot" instance=ExtResource("1_gkko6")]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.799552, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.63873, 0)
 shape = SubResource("SphereShape3D_kto0b")
 
 [node name="MobDetector" type="Area3D" parent="."]
