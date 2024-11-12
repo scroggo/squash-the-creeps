@@ -40,6 +40,9 @@ impl ICharacterBody3D for Mob {
 
 #[godot_api]
 impl Mob {
+    #[signal]
+    fn squashed();
+
     pub fn initialize(&mut self, start_position: Vector3, player_position: Vector3) {
         // Note: I'm guessing this defaults to using UP as up. If it doesn't,
         // I can use the `ex` version to specify up.
@@ -58,6 +61,11 @@ impl Mob {
 
     #[func]
     fn on_screen_exited(&mut self) {
+        self.base_mut().queue_free();
+    }
+
+    pub fn squash(&mut self) {
+        self.base_mut().emit_signal("squashed", &[]);
         self.base_mut().queue_free();
     }
 }
