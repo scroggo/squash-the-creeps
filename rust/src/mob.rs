@@ -1,6 +1,8 @@
 use std::f64::consts::PI;
 
-use godot::classes::{CharacterBody3D, ICharacterBody3D, VisibleOnScreenNotifier3D};
+use godot::classes::{
+    AnimationPlayer, CharacterBody3D, ICharacterBody3D, VisibleOnScreenNotifier3D,
+};
 use godot::global::{randf_range, randi_range};
 use godot::prelude::*;
 
@@ -57,6 +59,11 @@ impl Mob {
         let mut velocity = Vector3::FORWARD * random_speed as f32;
         velocity = velocity.rotated(Vector3::UP, self.base().get_rotation().y);
         self.base_mut().set_velocity(velocity);
+
+        let speed_scale = random_speed as f32 / self.min_speed as f32;
+        self.base()
+            .get_node_as::<AnimationPlayer>("AnimationPlayer")
+            .set_speed_scale(speed_scale);
     }
 
     #[func]
