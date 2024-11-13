@@ -44,6 +44,7 @@ mesh = SubResource("BoxMesh_uhap3")
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 14, 0)
 
 [node name="Player" parent="." instance=ExtResource("1_hp3n3")]
+moving_animation_speed = 2.0
 
 [node name="CameraPivot" type="Marker3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 0, 0, 0)

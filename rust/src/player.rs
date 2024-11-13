@@ -1,4 +1,4 @@
-use godot::classes::{Area3D, CharacterBody3D, ICharacterBody3D};
+use godot::classes::{AnimationPlayer, Area3D, CharacterBody3D, ICharacterBody3D};
 use godot::prelude::*;
 
 use crate::mob::Mob;
@@ -15,6 +15,10 @@ pub struct Player {
     #[export]
     bounce_impulse: f32, // Bounce "strength" in m/s, off of mobs
     target_velocity: Vector3,
+    #[export]
+    moving_animation_speed: f32,
+    #[export]
+    still_animation_speed: f32,
 
     base: Base<CharacterBody3D>,
 }
@@ -28,6 +32,8 @@ impl ICharacterBody3D for Player {
             target_velocity: Vector3::ZERO,
             jump_impulse: 20.0,
             bounce_impulse: 16.0,
+            moving_animation_speed: 1.0,
+            still_animation_speed: 1.0,
             base,
         }
     }
@@ -50,6 +56,14 @@ impl ICharacterBody3D for Player {
             direction = direction.limit_length(Some(1.0));
             let mut pivot = self.base().get_node_as::<Node3D>("Pivot");
             pivot.set_basis(Basis::new_looking_at(direction, Vector3::UP, false));
+
+            self.base()
+                .get_node_as::<AnimationPlayer>("AnimationPlayer")
+                .set_speed_scale(self.moving_animation_speed);
+        } else {
+            self.base()
+                .get_node_as::<AnimationPlayer>("AnimationPlayer")
+                .set_speed_scale(self.still_animation_speed);
         }
 
         self.target_velocity.x = direction.x * self.speed;
