@@ -7,7 +7,7 @@ radius = 0.8
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_xfejp"]
 height = 0.219348
-radius = 1.20911
+radius = 1.0
 
 [sub_resource type="Animation" id="Animation_bquw3"]
 length = 0.001
@@ -89,7 +89,7 @@ collision_mask = 2
 monitorable = false
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="MobDetector"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.469861, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.166263, 0)
 shape = SubResource("CylinderShape3D_xfejp")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
