@@ -14,7 +14,7 @@ pub struct Player {
     jump_impulse: f32, // Jump "strength" in m/s
     #[export]
     bounce_impulse: f32, // Bounce "strength" in m/s, off of mobs
-    target_velocity: Vector3, // Hmm, why is this a member?
+    target_velocity: Vector3,
 
     base: Base<CharacterBody3D>,
 }
