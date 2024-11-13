@@ -55,11 +55,11 @@ impl ICharacterBody3D for Player {
         self.target_velocity.x = direction.x * self.speed;
         self.target_velocity.z = direction.z * self.speed;
 
-        // Note to self: Not in the tutorial (yet), but shouldn't y velocity
-        // reset at some point? (Maybe handled by jumping?)
         if self.base().is_on_floor() {
             if input.is_action_just_pressed("jump") {
                 self.target_velocity.y = self.jump_impulse;
+            } else {
+                self.target_velocity.y = 0.0;
             }
         } else {
             self.target_velocity.y -= delta as f32 * self.fall_acceleration;
