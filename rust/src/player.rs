@@ -1,3 +1,5 @@
+use std::f32::consts::PI;
+
 use godot::classes::{AnimationPlayer, Area3D, CharacterBody3D, ICharacterBody3D};
 use godot::prelude::*;
 
@@ -107,6 +109,11 @@ impl ICharacterBody3D for Player {
         let target_velocity = self.target_velocity;
         self.base_mut().set_velocity(target_velocity);
         self.base_mut().move_and_slide();
+
+        let mut pivot = self.base().get_node_as::<Node3D>("Pivot");
+        let mut rotation = pivot.get_rotation();
+        rotation.x = PI / 6.0 * self.base().get_velocity().y / self.jump_impulse;
+        pivot.set_rotation(rotation);
     }
 }
 
