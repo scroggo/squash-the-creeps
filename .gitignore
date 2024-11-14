@@ -8,3 +8,6 @@ rust/target/
 # VIM swap files
 *.swp
 
+# VSCode configuration for debugging. See
+# https://godot-rust.github.io/book/toolchain/debugging.html
+rust/.vscode/
