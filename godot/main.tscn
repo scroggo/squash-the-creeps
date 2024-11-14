@@ -110,19 +110,6 @@ grow_horizontal = 2
 grow_vertical = 2
 theme = SubResource("Theme_3fdwa")
 
-[node name="ScoreLabel" type="ScoreLabel" parent="UserInterface"]
-layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -32.0
-offset_top = 30.0
-offset_right = 32.0
-offset_bottom = 53.0
-grow_horizontal = 2
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-text = "Score: 0"
-
 [node name="Retry" type="ColorRect" parent="UserInterface"]
 layout_mode = 1
 anchors_preset = 15
@@ -147,3 +134,23 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "Retry?"
+
+[node name="ScoreContainer" type="ScoreContainer" parent="UserInterface"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 15.0
+offset_bottom = 36.0
+grow_horizontal = 2
+alignment = 1
+
+[node name="ScoreLabel" type="Label" parent="UserInterface/ScoreContainer"]
+layout_mode = 2
+size_flags_horizontal = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "      Score: 0"
+
+[node name="HiScoreLabel" type="Label" parent="UserInterface/ScoreContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "Hi Score: 0      "

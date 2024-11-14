@@ -4,7 +4,7 @@ use godot::prelude::*;
 
 use crate::mob::Mob;
 use crate::player::Player;
-use crate::score_label::ScoreLabel;
+use crate::score_label::ScoreContainer;
 
 #[derive(GodotClass)]
 #[class(base=Node)]
@@ -65,7 +65,7 @@ impl Main {
 
         let score_label = self
             .base()
-            .get_node_as::<ScoreLabel>("UserInterface/ScoreLabel");
+            .get_node_as::<ScoreContainer>("UserInterface/ScoreContainer");
         let callable = Callable::from_object_method(&score_label, "on_mob_squashed");
         mob.connect("squashed", &callable);
 
