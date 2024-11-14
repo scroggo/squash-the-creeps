@@ -1,6 +1,6 @@
 use std::f32::consts::PI;
 
-use godot::classes::{AnimationPlayer, Area3D, CharacterBody3D, ICharacterBody3D};
+use godot::classes::{AnimationPlayer, CharacterBody3D, ICharacterBody3D};
 use godot::prelude::*;
 
 use crate::mob::Mob;
@@ -40,11 +40,7 @@ impl ICharacterBody3D for Player {
         }
     }
 
-    fn ready(&mut self) {
-        self.base()
-            .get_node_as::<Area3D>("MobDetector")
-            .connect("body_entered", &self.base().callable("on_body_entered"));
-    }
+    fn ready(&mut self) {}
 
     fn physics_process(&mut self, delta: f64) {
         let mut direction = Vector3::ZERO;
@@ -102,6 +98,8 @@ impl ICharacterBody3D for Player {
                     self.target_velocity.y = self.bounce_impulse;
                     // Prevent duplicate collisions.
                     break;
+                } else {
+                    self.die();
                 }
             }
         }
@@ -125,10 +123,5 @@ impl Player {
     fn die(&mut self) {
         self.base_mut().emit_signal("hit", &[]);
         self.base_mut().queue_free();
-    }
-
-    #[func]
-    fn on_body_entered(&mut self, _mob: Gd<Node3D>) {
-        self.die();
     }
 }
