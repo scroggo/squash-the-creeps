@@ -76,7 +76,7 @@ size = 19.0
 [node name="Cylinders" type="Node3D" parent="."]
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Cylinders"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13, 0, -14)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15, 0, -18)
 mesh = SubResource("CylinderMesh_vqrwn")
 
 [node name="MeshInstance3D2" type="MeshInstance3D" parent="Cylinders"]
@@ -88,7 +88,7 @@ transform = Transform3D(1, 0, 0, 0, -1, 8.74228e-08, 0, -8.74228e-08, -1, 14, 0,
 mesh = SubResource("CylinderMesh_vqrwn")
 
 [node name="MeshInstance3D4" type="MeshInstance3D" parent="Cylinders"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13, 0, -14)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15, 0, -16)
 mesh = SubResource("CylinderMesh_vqrwn")
 
 [node name="SpawnPath" type="Path3D" parent="."]
