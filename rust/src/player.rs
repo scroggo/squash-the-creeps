@@ -77,6 +77,8 @@ impl ICharacterBody3D for Player {
             self.target_velocity.y -= delta as f32 * self.fall_acceleration;
         }
 
+        let mut player_dead = false;
+
         // Handle bouncing on enemies
         for index in 0..self.base().get_slide_collision_count() {
             let collision = self.base_mut().get_slide_collision(index).unwrap();
@@ -96,12 +98,19 @@ impl ICharacterBody3D for Player {
                     let mut mob = collision.get_collider().unwrap().cast::<Mob>();
                     mob.bind_mut().squash();
                     self.target_velocity.y = self.bounce_impulse;
+
                     // Prevent duplicate collisions.
+                    // TODO: This would prevent a single jump from squashing
+                    // two mobs in the same physics frame.
                     break;
                 } else {
-                    self.die();
+                    player_dead = true;
                 }
             }
+        }
+        if player_dead {
+            self.die();
+            return;
         }
 
         let target_velocity = self.target_velocity;
