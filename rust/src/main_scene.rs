@@ -1,4 +1,4 @@
-use godot::classes::{ColorRect, InputEvent, PathFollow3D, Timer};
+use godot::classes::{ColorRect, PathFollow3D, Timer};
 use godot::global::randf;
 use godot::prelude::*;
 
@@ -34,18 +34,6 @@ impl INode for Main {
         self.base()
             .get_node_as::<ColorRect>("UserInterface/Retry")
             .hide();
-    }
-
-    fn unhandled_input(&mut self, event: Gd<InputEvent>) {
-        if event.is_action_pressed("ui_accept") {
-            if self
-                .base()
-                .get_node_as::<ColorRect>("UserInterface/Retry")
-                .is_visible()
-            {
-                self.base().get_tree().unwrap().reload_current_scene();
-            }
-        }
     }
 }
 
