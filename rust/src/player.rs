@@ -77,7 +77,7 @@ impl ICharacterBody3D for Player {
             self.target_velocity.y -= delta as f32 * self.fall_acceleration;
         }
 
-        let mut player_dead = false;
+        let mut player_killed = false;
 
         // Handle bouncing on enemies
         for index in 0..self.base().get_slide_collision_count() {
@@ -104,11 +104,11 @@ impl ICharacterBody3D for Player {
                     // two mobs in the same physics frame.
                     break;
                 } else {
-                    player_dead = true;
+                    player_killed = true;
                 }
             }
         }
-        if player_dead {
+        if player_killed {
             self.die();
             return;
         }
