@@ -1,5 +1,9 @@
-use godot::classes::{HBoxContainer, IHBoxContainer, Label};
+use godot::classes::file_access::ModeFlags;
+use godot::classes::{FileAccess, HBoxContainer, IHBoxContainer, Json, Label};
 use godot::prelude::*;
+
+const SAVED_HI_SCORE_PATH: &str = "user://hi_score.save";
+const HI_SCORE_STR: &str = "hi_score";
 
 #[derive(GodotClass)]
 #[class(base=HBoxContainer)]
@@ -14,9 +18,13 @@ impl IHBoxContainer for ScoreContainer {
     fn init(base: Base<HBoxContainer>) -> Self {
         Self {
             score: 0,
-            hi_score: 0, // TODO: Read from save file
+            hi_score: 0,
             base,
         }
+    }
+
+    fn ready(&mut self) {
+        self.load_hi_score();
     }
 }
 
@@ -28,6 +36,10 @@ impl ScoreContainer {
         if self.score > self.hi_score {
             self.hi_score = self.score;
         }
+        self.update_scores();
+    }
+
+    fn update_scores(&mut self) {
         let mut s = format!("      Score: {}", self.score);
         // TODO: Figure out a clearer way to convert this `String`?
         self.base_mut()
@@ -38,5 +50,42 @@ impl ScoreContainer {
         self.base_mut()
             .get_node_as::<Label>("HiScoreLabel")
             .set_text(&<String as Into<GString>>::into(s));
+    }
+
+    fn load_hi_score(&mut self) {
+        let save_file: Gd<FileAccess> = match FileAccess::open(SAVED_HI_SCORE_PATH, ModeFlags::READ)
+        {
+            Some(file) => file,
+            None => {
+                godot_error!("Failed to open \"{}\"!", SAVED_HI_SCORE_PATH);
+                return;
+            }
+        };
+
+        let raw_string = save_file.get_line();
+        let mut json_data = Json::new_gd();
+        let err = json_data.parse(&raw_string);
+
+        match err {
+            godot::global::Error::OK => {
+                let d = json_data.get_data().to::<Dictionary>();
+                self.hi_score = d.at(HI_SCORE_STR).to::<f32>() as i32;
+                self.update_scores();
+            }
+            e => {
+                godot_print!("Failed to parse the JSON for with error: {}", e.as_str());
+            }
+        }
+    }
+
+    pub fn save_hi_score(&self) {
+        if self.hi_score == self.score {
+            // Tied or beat the hi score.
+            let mut save_file = FileAccess::open(SAVED_HI_SCORE_PATH, ModeFlags::WRITE)
+                .expect("Failed to open SAVED_HI_SCORE_PATH for writing!");
+            let d = dict! { HI_SCORE_STR: self.hi_score};
+            let json_string = Json::stringify(&d.to_variant());
+            save_file.store_line(&json_string);
+        }
     }
 }

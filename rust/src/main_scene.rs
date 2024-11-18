@@ -76,6 +76,10 @@ impl Main {
     fn on_player_hit(&mut self) {
         self.base().get_node_as::<Timer>("MobTimer").stop();
         self.base()
+            .get_node_as::<ScoreContainer>("UserInterface/ScoreContainer")
+            .bind()
+            .save_hi_score();
+        self.base()
             .get_node_as::<ColorRect>("UserInterface/Retry")
             .show();
     }
