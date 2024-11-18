@@ -1,3 +1,4 @@
+use std::collections::HashSet;
 use std::f32::consts::PI;
 
 use godot::classes::{AnimationPlayer, CharacterBody3D, ICharacterBody3D};
@@ -78,6 +79,7 @@ impl ICharacterBody3D for Player {
         }
 
         let mut player_killed = false;
+        let mut squashed_mobs = HashSet::<i64>::new();
 
         // Handle bouncing on enemies
         for index in 0..self.base().get_slide_collision_count() {
@@ -96,13 +98,12 @@ impl ICharacterBody3D for Player {
                 if Vector3::UP.dot(collision.get_normal()) > 0.1 {
                     // Hit the mob from above.
                     let mut mob = collision.get_collider().unwrap().cast::<Mob>();
+                    if !squashed_mobs.insert(mob.instance_id().to_i64()) {
+                        // Mob was already in the set
+                        continue;
+                    }
                     mob.bind_mut().squash();
                     self.target_velocity.y = self.bounce_impulse;
-
-                    // Prevent duplicate collisions.
-                    // TODO: This would prevent a single jump from squashing
-                    // two mobs in the same physics frame.
-                    break;
                 } else {
                     player_killed = true;
                 }
