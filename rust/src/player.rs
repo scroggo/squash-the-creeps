@@ -104,7 +104,11 @@ impl ICharacterBody3D for Player {
                         continue;
                     }
                     mob.bind_mut().squash();
-                    self.target_velocity.y = self.bounce_impulse;
+                    self.target_velocity.y = if input.is_action_pressed("jump") {
+                        self.jump_impulse
+                    } else {
+                        self.bounce_impulse
+                    };
                 } else {
                     player_killed = true;
                 }

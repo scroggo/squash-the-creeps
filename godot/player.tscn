@@ -75,6 +75,7 @@ streams_count = 1
 stream_0/stream = ExtResource("2_3w16s")
 
 [node name="Player" type="Player"]
+bounce_impulse = 12.0
 collision_mask = 6
 metadata/_edit_group_ = true
 
