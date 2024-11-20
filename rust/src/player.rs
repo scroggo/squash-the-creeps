@@ -1,7 +1,7 @@
 use std::collections::HashSet;
 use std::f32::consts::PI;
 
-use godot::classes::{AnimationPlayer, CharacterBody3D, ICharacterBody3D};
+use godot::classes::{AnimationPlayer, AudioStreamPlayer, CharacterBody3D, ICharacterBody3D};
 use godot::prelude::*;
 
 use crate::mob::Mob;
@@ -71,6 +71,7 @@ impl ICharacterBody3D for Player {
         if self.base().is_on_floor() {
             if input.is_action_just_pressed("jump") {
                 self.target_velocity.y = self.jump_impulse;
+                self.base().get_node_as::<AudioStreamPlayer>("Splash").play();
             } else {
                 self.target_velocity.y = 0.0;
             }
