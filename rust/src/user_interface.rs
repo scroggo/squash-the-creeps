@@ -1,4 +1,4 @@
-use godot::classes::{ColorRect, Control, IControl, InputEvent};
+use godot::classes::{ColorRect, Control, IControl, InputEvent, Label};
 use godot::prelude::*;
 
 #[derive(PartialEq)]
@@ -37,8 +37,17 @@ impl IControl for UserInterface {
                 let paused = tree.is_paused();
                 tree.set_pause(!paused);
                 self.state = match tree.is_paused() {
-                    true => State::Paused,
-                    false => State::Playing,
+                    true => {
+                        self.base()
+                            .get_node_as::<Label>("Shade/Label")
+                            .set_text("P A U S E D");
+                        self.base().get_node_as::<ColorRect>("Shade").show();
+                        State::Paused
+                    }
+                    false => {
+                        self.base().get_node_as::<ColorRect>("Shade").hide();
+                        State::Playing
+                    }
                 }
             }
         }
@@ -49,6 +58,9 @@ impl IControl for UserInterface {
 impl UserInterface {
     pub fn show_retry(&mut self) {
         self.state = State::GameOver;
+        self.base()
+            .get_node_as::<Label>("Shade/Label")
+            .set_text("Retry?");
         self.base().get_node_as::<ColorRect>("Shade").show();
     }
 }

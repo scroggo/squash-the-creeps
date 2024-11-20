@@ -120,7 +120,7 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.188235, 0.121569, 0.121569, 0.427451)
 
-[node name="Retry" type="Label" parent="UserInterface/Shade"]
+[node name="Label" type="Label" parent="UserInterface/Shade"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
