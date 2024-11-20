@@ -1,9 +1,10 @@
-[gd_scene load_steps=14 format=3 uid="uid://clgsg3fxi6e6c"]
+[gd_scene load_steps=15 format=3 uid="uid://clgsg3fxi6e6c"]
 
 [ext_resource type="PackedScene" uid="uid://dkxqf3sn60q5s" path="res://player.tscn" id="1_hp3n3"]
 [ext_resource type="PackedScene" uid="uid://cw0rsp0vbu6vf" path="res://mob.tscn" id="1_peoyx"]
 [ext_resource type="Texture2D" uid="uid://s15h2esqpe8n" path="res://art/sand.jpg" id="2_jid1o"]
 [ext_resource type="FontFile" uid="uid://cnnvhsd0o7gb0" path="res://fonts/Montserrat-Medium.ttf" id="3_qiaoh"]
+[ext_resource type="AudioStream" uid="uid://yitsoeadgtlf" path="res://art/squish.wav" id="5_sxad4"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_d6fl5"]
 size = Vector3(60, 2, 60)
@@ -155,3 +156,6 @@ text = "      Score: 0"
 layout_mode = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "Hi Score: 0      "
+
+[node name="Squish" type="AudioStreamPlayer" parent="UserInterface/ScoreContainer"]
+stream = ExtResource("5_sxad4")

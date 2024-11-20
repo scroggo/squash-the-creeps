@@ -32,6 +32,7 @@ impl IHBoxContainer for ScoreContainer {
 impl ScoreContainer {
     #[func]
     fn on_mob_squashed(&mut self) {
+        self.base().get_node_as::<AudioStreamPlayer>("Squish").play();
         self.score += 1;
         if self.score > self.hi_score {
             self.hi_score = self.score;
