@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://clgsg3fxi6e6c"]
+[gd_scene load_steps=16 format=3 uid="uid://clgsg3fxi6e6c"]
 
 [ext_resource type="PackedScene" uid="uid://dkxqf3sn60q5s" path="res://player.tscn" id="1_hp3n3"]
 [ext_resource type="PackedScene" uid="uid://cw0rsp0vbu6vf" path="res://mob.tscn" id="1_peoyx"]
@@ -37,6 +37,11 @@ point_count = 5
 
 [sub_resource type="Theme" id="Theme_3fdwa"]
 default_font = ExtResource("3_qiaoh")
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_ldbpe"]
+random_pitch = 1.3
+streams_count = 1
+stream_0/stream = ExtResource("5_sxad4")
 
 [node name="Main" type="Main"]
 mob_scene = ExtResource("1_peoyx")
@@ -158,4 +163,4 @@ theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "Hi Score: 0      "
 
 [node name="Squish" type="AudioStreamPlayer" parent="UserInterface/ScoreContainer"]
-stream = ExtResource("5_sxad4")
+stream = SubResource("AudioStreamRandomizer_ldbpe")
