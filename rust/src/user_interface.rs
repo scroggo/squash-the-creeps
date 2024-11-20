@@ -34,9 +34,10 @@ impl IControl for UserInterface {
         }
         if event.is_action_pressed("pause") {
             if let Some(mut tree) = self.base().get_tree() {
-                let paused = tree.is_paused();
+                let mut paused = tree.is_paused();
                 tree.set_pause(!paused);
-                self.state = match tree.is_paused() {
+                paused = !paused;
+                self.state = match paused {
                     true => {
                         self.base()
                             .get_node_as::<Label>("Shade/Label")
@@ -48,7 +49,8 @@ impl IControl for UserInterface {
                         self.base().get_node_as::<ColorRect>("Shade").hide();
                         State::Playing
                     }
-                }
+                };
+                self.base_mut().emit_signal("paused", &[paused.to_variant()]);
             }
         }
     }
@@ -56,6 +58,9 @@ impl IControl for UserInterface {
 
 #[godot_api]
 impl UserInterface {
+    #[signal]
+    fn paused(paused: bool);
+
     pub fn show_retry(&mut self) {
         self.state = State::GameOver;
         self.base()

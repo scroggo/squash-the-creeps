@@ -32,6 +32,9 @@ impl INode for Main {
         self.base()
             .get_node_as::<Player>("Player")
             .connect("hit", &self.base().callable("on_player_hit"));
+        self.base()
+            .get_node_as::<UserInterface>("UserInterface")
+            .connect("paused", &self.base().callable("on_pause"));
     }
 }
 
@@ -69,5 +72,14 @@ impl Main {
             .get_node_as::<UserInterface>("UserInterface")
             .bind_mut()
             .show_retry();
+    }
+
+    #[func]
+    fn on_pause(&mut self, paused: bool) {
+        let mut player = self.base().get_node_as::<Player>("Player");
+        match paused {
+            true => player.hide(),
+            false => player.show(),
+        }
     }
 }
