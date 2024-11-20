@@ -68,4 +68,8 @@ impl UserInterface {
             .set_text("Retry?");
         self.base().get_node_as::<ColorRect>("Shade").show();
     }
+
+    pub fn play_squish(&mut self) {
+        self.base().get_node_as::<AudioStreamPlayer>("ScoreContainer/Squish").play();
+    }
 }
