@@ -1,10 +1,11 @@
-use godot::classes::{ColorRect, PathFollow3D, Timer};
+use godot::classes::{PathFollow3D, Timer};
 use godot::global::randf;
 use godot::prelude::*;
 
 use crate::mob::Mob;
 use crate::player::Player;
 use crate::score_label::ScoreContainer;
+use crate::user_interface::UserInterface;
 
 #[derive(GodotClass)]
 #[class(base=Node)]
@@ -31,9 +32,6 @@ impl INode for Main {
         self.base()
             .get_node_as::<Player>("Player")
             .connect("hit", &self.base().callable("on_player_hit"));
-        self.base()
-            .get_node_as::<ColorRect>("UserInterface/Retry")
-            .hide();
     }
 }
 
@@ -68,7 +66,8 @@ impl Main {
             .bind()
             .save_hi_score();
         self.base()
-            .get_node_as::<ColorRect>("UserInterface/Retry")
-            .show();
+            .get_node_as::<UserInterface>("UserInterface")
+            .bind_mut()
+            .show_retry();
     }
 }

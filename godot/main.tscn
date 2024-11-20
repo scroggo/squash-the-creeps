@@ -110,7 +110,8 @@ grow_horizontal = 2
 grow_vertical = 2
 theme = SubResource("Theme_3fdwa")
 
-[node name="Retry" type="ColorRect" parent="UserInterface"]
+[node name="Shade" type="ColorRect" parent="UserInterface"]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -119,7 +120,7 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.188235, 0.121569, 0.121569, 0.427451)
 
-[node name="Label" type="Label" parent="UserInterface/Retry"]
+[node name="Retry" type="Label" parent="UserInterface/Shade"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
