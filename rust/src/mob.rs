@@ -46,8 +46,9 @@ impl Mob {
     fn squashed();
 
     pub fn initialize(&mut self, start_position: Vector3, player_position: Vector3) {
-        // Note: I'm guessing this defaults to using UP as up. If it doesn't,
-        // I can use the `ex` version to specify up.
+        let scale = randf_range(0.5, 1.5) as f32;
+        self.base_mut().set_scale(Vector3::from_tuple((scale, scale, scale)));
+
         self.base_mut()
             .look_at_from_position(start_position, player_position);
 
