@@ -50,7 +50,8 @@ impl IControl for UserInterface {
                         State::Playing
                     }
                 };
-                self.base_mut().emit_signal("paused", &[paused.to_variant()]);
+                self.base_mut()
+                    .emit_signal("paused", &[paused.to_variant()]);
             }
         }
     }
@@ -70,6 +71,8 @@ impl UserInterface {
     }
 
     pub fn play_squish(&mut self) {
-        self.base().get_node_as::<AudioStreamPlayer>("ScoreContainer/Squish").play();
+        self.base()
+            .get_node_as::<AudioStreamPlayer>("ScoreContainer/Squish")
+            .play();
     }
 }

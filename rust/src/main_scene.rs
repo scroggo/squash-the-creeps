@@ -68,8 +68,7 @@ impl Main {
             .get_node_as::<ScoreContainer>("UserInterface/ScoreContainer")
             .bind()
             .save_hi_score();
-        let mut user_interface = self.base()
-            .get_node_as::<UserInterface>("UserInterface");
+        let mut user_interface = self.base().get_node_as::<UserInterface>("UserInterface");
         user_interface.bind_mut().show_retry();
         user_interface.bind_mut().play_squish();
     }

@@ -74,7 +74,9 @@ impl ICharacterBody3D for Player {
             if input.is_action_just_pressed("jump") {
                 self.consecutive_bounces = 0;
                 self.target_velocity.y = self.jump_impulse;
-                self.base().get_node_as::<AudioStreamPlayer>("Splash").play();
+                self.base()
+                    .get_node_as::<AudioStreamPlayer>("Splash")
+                    .play();
             } else {
                 self.target_velocity.y = 0.0;
             }

@@ -47,7 +47,8 @@ impl Mob {
 
     pub fn initialize(&mut self, start_position: Vector3, player_position: Vector3) {
         let scale = randf_range(0.5, 1.5) as f32;
-        self.base_mut().set_scale(Vector3::from_tuple((scale, scale, scale)));
+        self.base_mut()
+            .set_scale(Vector3::from_tuple((scale, scale, scale)));
 
         self.base_mut()
             .look_at_from_position(start_position, player_position);
