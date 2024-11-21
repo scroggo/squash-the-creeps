@@ -43,7 +43,7 @@ impl ICharacterBody3D for Mob {
 #[godot_api]
 impl Mob {
     #[signal]
-    fn squashed();
+    fn squashed(consecutive_bounces: i32);
 
     pub fn initialize(&mut self, start_position: Vector3, player_position: Vector3) {
         let scale = randf_range(0.5, 1.5) as f32;
@@ -72,8 +72,9 @@ impl Mob {
         self.base_mut().queue_free();
     }
 
-    pub fn squash(&mut self) {
-        self.base_mut().emit_signal("squashed", &[]);
+    pub fn squash(&mut self, consecutive_bounces: i32) {
+        self.base_mut()
+            .emit_signal("squashed", &[consecutive_bounces.to_variant()]);
         self.base_mut().queue_free();
     }
 }

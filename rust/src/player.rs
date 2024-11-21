@@ -22,6 +22,7 @@ pub struct Player {
     moving_animation_speed: f32,
     #[export]
     still_animation_speed: f32,
+    consecutive_bounces: i32,
 
     base: Base<CharacterBody3D>,
 }
@@ -37,6 +38,7 @@ impl ICharacterBody3D for Player {
             bounce_impulse: 16.0,
             moving_animation_speed: 1.0,
             still_animation_speed: 1.0,
+            consecutive_bounces: 0,
             base,
         }
     }
@@ -70,6 +72,7 @@ impl ICharacterBody3D for Player {
 
         if self.base().is_on_floor() {
             if input.is_action_just_pressed("jump") {
+                self.consecutive_bounces = 0;
                 self.target_velocity.y = self.jump_impulse;
                 self.base().get_node_as::<AudioStreamPlayer>("Splash").play();
             } else {
@@ -103,7 +106,8 @@ impl ICharacterBody3D for Player {
                         // Mob was already in the set
                         continue;
                     }
-                    mob.bind_mut().squash();
+                    self.consecutive_bounces += 1;
+                    mob.bind_mut().squash(self.consecutive_bounces);
                     self.target_velocity.y = if input.is_action_pressed("jump") {
                         self.jump_impulse
                     } else {

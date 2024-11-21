@@ -1,5 +1,6 @@
 use godot::classes::file_access::ModeFlags;
 use godot::classes::{FileAccess, HBoxContainer, IHBoxContainer, Json, Label};
+use godot::global::pow;
 use godot::prelude::*;
 
 const SAVED_HI_SCORE_PATH: &str = "user://hi_score.save";
@@ -31,9 +32,9 @@ impl IHBoxContainer for ScoreContainer {
 #[godot_api]
 impl ScoreContainer {
     #[func]
-    fn on_mob_squashed(&mut self) {
+    fn on_mob_squashed(&mut self, consecutive_bounces: i32) {
         self.base().get_node_as::<AudioStreamPlayer>("Squish").play();
-        self.score += 1;
+        self.score += pow(2.0, (consecutive_bounces - 1) as f64) as i32;
         if self.score > self.hi_score {
             self.hi_score = self.score;
         }
