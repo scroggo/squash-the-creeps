@@ -60,7 +60,7 @@ mesh = SubResource("BoxMesh_uhap3")
 surface_material_override/0 = SubResource("StandardMaterial3D_vbbpw")
 
 [node name="WaterMesh" type="MeshInstance3D" parent="Ground"]
-transform = Transform3D(50, 0, 0, 0, 50, 0, 0, 0, 50, 0, 0, 0)
+transform = Transform3D(50, 0, 0, 0, 50, 0, 0, 0, 50, 0, 0.880744, 0)
 mesh = SubResource("PlaneMesh_pi175")
 surface_material_override/0 = SubResource("StandardMaterial3D_42vv4")
 
