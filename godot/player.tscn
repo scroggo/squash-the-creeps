@@ -1,7 +1,8 @@
-[gd_scene load_steps=8 format=3 uid="uid://dkxqf3sn60q5s"]
+[gd_scene load_steps=11 format=3 uid="uid://dkxqf3sn60q5s"]
 
 [ext_resource type="PackedScene" uid="uid://0vktky63gjrt" path="res://art/player.glb" id="1_gkko6"]
 [ext_resource type="AudioStream" uid="uid://c3l2yw48nnmna" path="res://art/splash.wav" id="2_3w16s"]
+[ext_resource type="FontFile" uid="uid://cnnvhsd0o7gb0" path="res://fonts/Montserrat-Medium.ttf" id="3_3nqgr"]
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_mel2i"]
 height = 0.810529
@@ -74,6 +75,12 @@ random_pitch = 1.4
 streams_count = 1
 stream_0/stream = ExtResource("2_3w16s")
 
+[sub_resource type="QuadMesh" id="QuadMesh_mlp5s"]
+size = Vector2(8, 3)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lpc33"]
+albedo_color = Color(0.121569, 1, 1, 1)
+
 [node name="Player" type="Player"]
 bounce_impulse = 12.0
 collision_mask = 6
@@ -95,3 +102,20 @@ autoplay = "float"
 
 [node name="Splash" type="AudioStreamPlayer" parent="."]
 stream = SubResource("AudioStreamRandomizer_2v0qp")
+
+[node name="Display" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.59241, -2.65232)
+visible = false
+mesh = SubResource("QuadMesh_mlp5s")
+surface_material_override/0 = SubResource("StandardMaterial3D_lpc33")
+
+[node name="DisplayText" type="Label3D" parent="Display"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.342227, 0.557448)
+billboard = 1
+double_sided = false
+fixed_size = true
+text = "2 bounces!"
+font = ExtResource("3_3nqgr")
+font_size = 27
+
+[node name="DisplayTimer" type="Timer" parent="."]

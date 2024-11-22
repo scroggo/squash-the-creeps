@@ -1,7 +1,10 @@
 use std::collections::HashSet;
 use std::f32::consts::PI;
 
-use godot::classes::{AnimationPlayer, AudioStreamPlayer, CharacterBody3D, ICharacterBody3D};
+use godot::classes::{
+    AnimationPlayer, AudioStreamPlayer, CharacterBody3D, ICharacterBody3D, Label3D, MeshInstance3D,
+    Timer,
+};
 use godot::prelude::*;
 
 use crate::mob::Mob;
@@ -43,7 +46,12 @@ impl ICharacterBody3D for Player {
         }
     }
 
-    fn ready(&mut self) {}
+    fn ready(&mut self) {
+        let callable = self.base().callable("on_display_timer_timeout");
+        self.base()
+            .get_node_as::<Timer>("DisplayTimer")
+            .connect("timeout", &callable);
+    }
 
     fn physics_process(&mut self, delta: f64) {
         let mut direction = Vector3::ZERO;
@@ -109,6 +117,7 @@ impl ICharacterBody3D for Player {
                         continue;
                     }
                     self.consecutive_bounces += 1;
+                    self.show_hide_bounces();
                     mob.bind_mut().squash(self.consecutive_bounces);
                     self.target_velocity.y = if input.is_action_pressed("jump") {
                         self.jump_impulse
@@ -144,5 +153,25 @@ impl Player {
     fn die(&mut self) {
         self.base_mut().emit_signal("hit", &[]);
         self.base_mut().queue_free();
+    }
+
+    fn show_hide_bounces(&mut self) {
+        let mut display = self.base().get_node_as::<MeshInstance3D>("Display");
+        match self.consecutive_bounces {
+            n if n <= 1 => display.hide(),
+            n => {
+                self.base().get_node_as::<Timer>("DisplayTimer").start();
+                let s = format!("Streak: {n}!");
+                display
+                    .get_node_as::<Label3D>("DisplayText")
+                    .set_text(&<String as Into<GString>>::into(s));
+                display.show();
+            }
+        }
+    }
+
+    #[func]
+    fn on_display_timer_timeout(&mut self) {
+        self.base().get_node_as::<MeshInstance3D>("Display").hide();
     }
 }
