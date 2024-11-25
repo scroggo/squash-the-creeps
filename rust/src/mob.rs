@@ -45,7 +45,28 @@ impl Mob {
     #[signal]
     fn squashed(consecutive_bounces: i32);
 
-    pub fn initialize(&mut self, start_position: Vector3, player_position: Vector3) {
+    // Helper methods to provide a straight line of mobs for testing
+    fn choose_angle(straight_line: bool) -> f32 {
+        const PI_OVER_FOUR: f64 = PI * 0.25;
+        match straight_line {
+            true => 0.0,
+            false => randf_range(-PI_OVER_FOUR, PI_OVER_FOUR) as f32,
+        }
+    }
+
+    fn choose_speed(&self, straight_line: bool) -> i64 {
+        match straight_line {
+            true => self.min_speed,
+            false => randi_range(self.min_speed, self.max_speed),
+        }
+    }
+
+    pub fn initialize(
+        &mut self,
+        start_position: Vector3,
+        player_position: Vector3,
+        straight_line: bool,
+    ) {
         let scale = randf_range(0.5, 1.5) as f32;
         self.base_mut()
             .set_scale(Vector3::from_tuple((scale, scale, scale)));
@@ -53,11 +74,9 @@ impl Mob {
         self.base_mut()
             .look_at_from_position(start_position, player_position);
 
-        const PI_OVER_FOUR: f64 = PI * 0.25;
-        self.base_mut()
-            .rotate_y(randf_range(-PI_OVER_FOUR, PI_OVER_FOUR) as f32);
+        self.base_mut().rotate_y(Self::choose_angle(straight_line));
 
-        let random_speed = randi_range(self.min_speed, self.max_speed);
+        let random_speed = self.choose_speed(straight_line);
         let mut velocity = Vector3::FORWARD * random_speed as f32;
         velocity = velocity.rotated(Vector3::UP, self.base().get_rotation().y);
         self.base_mut().set_velocity(velocity);

@@ -13,6 +13,12 @@ struct Main {
     #[export]
     mob_scene: Gd<PackedScene>,
 
+    #[export]
+    /// Spawn all mobs from the same location, at the same speed, all heading
+    /// directly for the player. This makes it easier to test bouncing on
+    /// multiple mobs without landing.
+    straight_line_for_debugging: bool,
+
     base: Base<Node>,
 }
 
@@ -21,6 +27,7 @@ impl INode for Main {
     fn init(base: Base<Node>) -> Self {
         Self {
             mob_scene: PackedScene::new_gd(),
+            straight_line_for_debugging: false,
             base,
         }
     }
@@ -40,17 +47,26 @@ impl INode for Main {
 
 #[godot_api]
 impl Main {
+    fn choose_progress_ratio(&self) -> f32 {
+        match self.straight_line_for_debugging {
+            true => 0.0,
+            false => randf() as f32,
+        }
+    }
     #[func]
     fn on_mob_timer_timeout(&mut self) {
         let mut mob = self.mob_scene.instantiate().unwrap().cast::<Mob>();
         let mut spawn_location = self
             .base()
             .get_node_as::<PathFollow3D>("SpawnPath/SpawnLocation");
-        spawn_location.set_progress_ratio(randf() as f32);
+        spawn_location.set_progress_ratio(self.choose_progress_ratio());
 
         let player = self.base().get_node_as::<Player>("Player");
-        mob.bind_mut()
-            .initialize(spawn_location.get_position(), player.get_position());
+        mob.bind_mut().initialize(
+            spawn_location.get_position(),
+            player.get_position(),
+            self.straight_line_for_debugging,
+        );
 
         let score_label = self
             .base()
