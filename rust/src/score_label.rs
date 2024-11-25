@@ -11,6 +11,11 @@ const HI_SCORE_STR: &str = "hi_score";
 pub struct ScoreContainer {
     score: i32,
     hi_score: i32,
+
+    #[export]
+    /// At the beginning of the game, reset the hi score to 0.
+    erase_hi_score_for_debugging: bool,
+
     base: Base<HBoxContainer>,
 }
 
@@ -20,12 +25,17 @@ impl IHBoxContainer for ScoreContainer {
         Self {
             score: 0,
             hi_score: 0,
+            erase_hi_score_for_debugging: false,
             base,
         }
     }
 
     fn ready(&mut self) {
-        self.load_hi_score();
+        if self.erase_hi_score_for_debugging {
+            self.save_score(0);
+        } else {
+            self.load_hi_score();
+        }
     }
 }
 
@@ -85,11 +95,15 @@ impl ScoreContainer {
     pub fn save_hi_score(&self) {
         if self.hi_score == self.score {
             // Tied or beat the hi score.
-            let mut save_file = FileAccess::open(SAVED_HI_SCORE_PATH, ModeFlags::WRITE)
-                .expect("Failed to open SAVED_HI_SCORE_PATH for writing!");
-            let d = dict! { HI_SCORE_STR: self.hi_score};
-            let json_string = Json::stringify(&d.to_variant());
-            save_file.store_line(&json_string);
+            self.save_score(self.hi_score);
         }
+    }
+
+    fn save_score(&self, hi_score: i32) {
+        let mut save_file = FileAccess::open(SAVED_HI_SCORE_PATH, ModeFlags::WRITE)
+            .expect("Failed to open SAVED_HI_SCORE_PATH for writing!");
+        let d = dict! { HI_SCORE_STR: hi_score};
+        let json_string = Json::stringify(&d.to_variant());
+        save_file.store_line(&json_string);
     }
 }
