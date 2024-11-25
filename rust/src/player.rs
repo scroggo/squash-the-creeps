@@ -160,18 +160,19 @@ impl Player {
         match self.consecutive_bounces {
             n if n <= 1 => display.hide(),
             n => {
-                self.base().get_node_as::<Timer>("DisplayTimer").start();
                 let s = format!("Streak: {n}!");
                 display
                     .get_node_as::<Label3D>("DisplayText")
                     .set_text(&<String as Into<GString>>::into(s));
-                display.show();
+                let mut anim_player = self
+                    .base()
+                    .get_node_as::<AnimationPlayer>("AnimationPlayer");
+                anim_player.seek(0.0);
+                anim_player
+                    .play_ex()
+                    .name("Show bounces/show_bounces")
+                    .done();
             }
         }
-    }
-
-    #[func]
-    fn on_display_timer_timeout(&mut self) {
-        self.base().get_node_as::<MeshInstance3D>("Display").hide();
     }
 }
