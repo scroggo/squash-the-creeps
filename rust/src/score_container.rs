@@ -39,6 +39,14 @@ impl IHBoxContainer for ScoreContainer {
     }
 }
 
+fn format_score(text: &str, score: i32) -> String {
+    if score < i32::max_value() {
+        text.replace("{}", &score.to_string())
+    } else {
+        text.replace("{}", "MAX")
+    }
+}
+
 #[godot_api]
 impl ScoreContainer {
     #[func]
@@ -46,7 +54,10 @@ impl ScoreContainer {
         self.base()
             .get_node_as::<AudioStreamPlayer>("Squish")
             .play();
-        self.score += pow(2.0, (consecutive_bounces - 1) as f64) as i32;
+        let (sum, overflowed) = self
+            .score
+            .overflowing_add(pow(2.0, (consecutive_bounces - 1) as f64) as i32);
+        self.score = if overflowed { i32::max_value() } else { sum };
         if self.score > self.hi_score {
             self.hi_score = self.score;
         }
@@ -54,13 +65,13 @@ impl ScoreContainer {
     }
 
     fn update_scores(&mut self) {
-        let mut s = format!("      Score: {}", self.score);
+        let mut s = format_score("      Score: {}", self.score);
         // TODO: Figure out a clearer way to convert this `String`?
         self.base_mut()
             .get_node_as::<Label>("ScoreLabel")
             .set_text(&<String as Into<GString>>::into(s));
 
-        s = format!("Hi Score: {}      ", self.hi_score);
+        s = format_score("Hi Score: {}      ", self.hi_score);
         self.base_mut()
             .get_node_as::<Label>("HiScoreLabel")
             .set_text(&<String as Into<GString>>::into(s));
