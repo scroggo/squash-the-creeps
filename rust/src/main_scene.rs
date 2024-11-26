@@ -4,7 +4,7 @@ use godot::prelude::*;
 
 use crate::mob::Mob;
 use crate::player::Player;
-use crate::score_label::ScoreContainer;
+use crate::score_container::ScoreContainer;
 use crate::user_interface::UserInterface;
 
 #[derive(GodotClass)]
