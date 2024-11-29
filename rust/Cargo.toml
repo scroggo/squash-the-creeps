@@ -6,5 +6,7 @@ edition = "2021"
 [lib]
 crate-type = ["cdylib"]  # Compile this crate to a dynamic C library.
 
-[dependencies]
-godot = { git = "https://github.com/godot-rust/gdext", branch = "master" }
+[dependencies.godot]
+git = "https://github.com/godot-rust/gdext"
+branch = "master"
+features = ["experimental-wasm", "lazy-function-tables"]
